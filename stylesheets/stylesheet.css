@@ -1,30 +1,62 @@
-.c3 .r5 {
-  background-color: red;
-}
 
 .column {
-  width:100px;
-  margin: 0;
+  position: relative;
+  width: 100px;
+  /*margin: 0;*/
   display: inline-block;
-  vertical-align: top;
+  /*vertical-align: top;*/
+  z-index: -1;
 }
 
 .row {
+  position: relative;
   width: 100%;
   height: 100px;
+  z-index: -1;
+  border-radius: 50px;
 }
 
-.c4 {
-  background-color: blue;
+[data-color="red"] {
+  background-color: red;
 }
 
-.container {
-  /*width: 750px;*/
+[data-color="black"] {
+  background-color: black;
+}
+
+[data-color="empty"] {
+  /*background-color: white;*/
+}
+
+.board {
+  /*position: absolute;*/
+  /*background-size: 100% 100%;*/
   display: inline-block;
-  border: 1px solid red;
-  vertical-align: top;
+  /*border: 1px solid red;*/
+  /*vertical-align: top;*/
+  /*background-image: url("../imgs/Connect4Board.png");*/
+  background-repeat:no-repeat;
+/*  z-index: 10;*/
 }
 
-.r4 {
-  background-color: yellow;
+.board img {
+  display: inline-block;
+  float:left;
+  width: 728px;
+  position: absolute;
+  height: 600px;
+  border-radius: 25px;
 }
+
+.full_layout {
+  width:730px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.menu {
+  float: right;
+  display: inline-block;
+}
+
