@@ -1,10 +1,10 @@
 var allTrue = function(array) {
   for(var i = 0; i < array.length; i++){
-    if(array[i] === true){
-      return true;
+    if(array[i] !== true){
+      return false;
     }
   }
-  return false;
+  return true;
 }
 
 var arrayify = function(nodeList){
@@ -50,19 +50,48 @@ var findCell = function(col, row) {
 }
 
 var findDiagonal1 = function(cell) {
-  x = parseInt(row(cell)[1]);
-  y = parseInt(column(cell)[1]);
+  var x = parseInt(row(cell)[1]);
+  var y = parseInt(column(cell)[1]);
+
+  var solution = []
+  while (x>0 && y>0) {
+    x--;
+    y--;
+  }
+  while (x<7 && y<6) {
+    solution.push(findCell(x,y));
+    x++;
+    y++;
+  }
+  return solution
 }
 
 var findDiagonal2 = function(cell) {
+  var x = parseInt(row(cell)[1]);
+  var y = parseInt(column(cell)[1]);
+
+  var solution = []
+  while (x>0 && y<6) {
+    x--;
+    y++;
+  }
+  while (x<7 && y>=0) {
+    solution.push(findCell(x,y));
+    x++;
+    y--;
+  }
+  return solution
 }
 
 var check = function (array, color) {
   var conditions = []
+  if (array.length<4){
+    return false
+  }
   for (var j = 0; j<array.length-3; j++) {
     conditions[j] = array.slice(j, j+4)
     for (var k = 0; k<4; k++){
-      conditions[j][k] = (conditions[j][k].dataset.color == color);
+      conditions[j][k] = ((conditions[j][k].dataset.color === color) && (color !== "empty"));
     }
   }
   for (var i = 0; i<conditions.length; i++){
@@ -76,13 +105,17 @@ var check = function (array, color) {
 var winner = function(cell) {
   var rowElements = findRow(row(cell));
   var colElements = findColumn(column(cell));
+  var diag1Elements = findDiagonal1(cell);
+  var diag2Elements = findDiagonal2(cell);
   var color = findColor(cell);
 
+  console.log("row elements:",rowElements,"col elements:", colElements, "diag1 elements:", diag1Elements, "diag2 elements:", diag2Elements, "color:", color)
+
+  console.log(check(rowElements, color), check(colElements, color),check(diag1Elements, color),check(diag2Elements, color))
   if(check(rowElements, color) ||
-     check(colElements, color)) {
-     // ||
-     // check(diagonal1, color) ||
-     // check(diagonal2, color)){
+     check(colElements, color) ||
+     check(diag1Elements, color) ||
+     check(diag2Elements, color)){
     return true
   }
   return false
