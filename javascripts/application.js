@@ -78,6 +78,14 @@ var removePlayer = function() {
 
 }
 
+var autoPlace = function(column) {
+  $( ".column" ).unbind();
+  var empty_cells = $( column ).children("[data-color=empty]");
+  var cell_played = empty_cells.last();
+
+  animateTurn(empty_cells);
+}
+
 var placePiece = function() {
   $( ".column" ).unbind();
   var empty_cells = $( this ).children("[data-color=empty]");
