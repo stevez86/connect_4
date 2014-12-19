@@ -35,14 +35,14 @@ var animateTurn = function (empty_cells) {
   animation_to_cell.attr("id","animate_to_cell");
   cell_played.attr("id","cell_played");
 
-  $(".player").hide({effect: "slide", direction:"left", duration: 150, complete: animatePlacePiece});
+  $(".player").hide({effect: "slide", direction:"left", duration: 400, complete: animatePlacePiece});
 
 }
 
 var animatePlacePiece = function() {
   changePlayerMenu();
-  $("#animate_from_cell").effect("transfer", {to:"#animate_to_cell", duration:500, className:playerTurn, easing:"easeOutBounce", complete: afterPiecePlaced});
-  $(".player").show("slide",{direction:"right"}, 150);
+  $("#animate_from_cell").effect("transfer", {to:"#animate_to_cell", duration:600, className:playerTurn, easing:"easeOutBounce", complete: afterPiecePlaced});
+  $(".player").show("slide",{direction:"right"}, 400);
 }
 
 
@@ -57,15 +57,20 @@ var afterPiecePlaced = function() {
   $("#animate_from_cell").attr("id","");
   $("#animate_to_cell").attr("id","");
 
-  changePlayerTurn();
 
   if (winner(cell_played[0])) {
     $( ".column" ).unbind();  //FREEZES THE GAME
     $(".row").css("opacity","");
     $(".board").css("background-color","green");
+    $('.player_name').text(playerTurn.charAt(0).toUpperCase() + playerTurn.slice(1) + " won!");
+    $( ".player" ).attr('data-color',playerTurn);
     playerTurn = "none";
   } else {
+
+    changePlayerTurn();
     setEvents();
+    timer("restart");
+
     if (players == 1) {
       players = 0
       randomMove();
@@ -75,12 +80,12 @@ var afterPiecePlaced = function() {
   }
 }
 
-var removePlayer = function() {
-  // $(".player").hide(0);
-  $(".player").toggle("slide",{direction:"right"},500);
-  $(".player").toggle("slide",{direction:"left"},500);
+// var removePlayer = function() {
+//   // $(".player").hide(0);
+//   $(".player").toggle("slide",{direction:"right"},500);
+//   $(".player").toggle("slide",{direction:"left"},500);
 
-}
+// }
 
 var computerPlace = function(columnNum) {
   $( ".column" ).unbind();
@@ -99,41 +104,91 @@ var randomMove = function(){
 
 var placePiece = function() {
   $( ".column" ).unbind();
+  timer("pause");
   var empty_cells = $( this ).children("[data-color=empty]");
   var cell_played = empty_cells.last();
 
   animateTurn(empty_cells);
 }
 
+var triggerTwoPlayerGame = function(){
+  playGame(2)
+  $(".1player").hide();
+  $(".2player").hide();
+  $(".restart").show("fade",100);
+}
+
+var triggerOnePlayerGame = function(){
+  playGame(1)
+  $(".1player").hide();
+  $(".2player").hide();
+  $(".restart").show();
+}
+
+
+setupBoard = function(){
+  $(".1player").unbind();
+  $(".2player").unbind();
+
+  $(".1player").on("click", triggerOnePlayerGame);
+  $(".2player").on("click", triggerTwoPlayerGame);
+
+  $("button").show();
+  $(".restart").hide();
+
+  $(".column").unbind();
+  $(".restart").unbind();
+
+  playerTurn = "black";
+
+  changePlayerMenu();
+  changePlayerTurn();
+
+  timer("pause");
+  $(".timer").text(":00");
+
+  $(".row").attr('data-color',"empty");
+  $(".board").css("background-color","");
+}
 
 var playGame = function(type) {
-  players = type
+  players = type;
 
   setEvents();
-  startTimer();
+  timer("restart");
 
 }
 
-var startTimer = function () {
 
-  console.log("start timer");
+var time;
+var counter;
 
-  var count=31;
-  var counter = setInterval(startTimer, 1000); //1000 will  run it every 1 second
+var timer = function(key) {
 
-  count -= 1;
+  time -= 1;
 
-  $(".timer").text(":" + count); // watch for spelling
-
-  if (count <= 0)
-  {
-     clearInterval(counter);
-     $(".board").css("background-color","red");
-     //next opponent
-     return;
+  if (key == "restart") {
+    console.log(key);
+    time = 20;
+    clearInterval(counter);
+    counter = setInterval(timer, 1000);
   }
-}
 
+  if (key == "pause") {
+    $(".timer").text(":" + time);
+    clearInterval(counter);
+    return;
+  }
+
+  if (time <= 0)
+  {
+    $(".timer").text(":" + time);
+    clearInterval(counter);
+    return;
+  }
+
+  $(".timer").text(":" + time);
+}
 
 var setEvents = function () {
   $( ".column:has([data-color=empty])" ).click(placePiece);
@@ -149,47 +204,6 @@ var setEvents = function () {
   );
 }
 
-var triggerTwoPlayerGame = function(){
-  playGame(2)
-  $(".1player").hide()
-  $(".2player").hide()
-  $(".restart").show()
-}
-
-var triggerOnePlayerGame = function(){
-  playGame(1)
-  $(".1player").hide()
-  $(".2player").hide()
-  $(".restart").show()
-}
-
-
-setupBoard = function(){
-  $(".1player").unbind();
-  $(".2player").unbind();
-
-  $(".1player").on("click", triggerOnePlayerGame)
-  $(".2player").on("click", triggerTwoPlayerGame)
-
-  $("button").show();
-  $(".restart").hide();
-
-
-  $(".column").unbind();
-  $(".restart").unbind();
-
-  playerTurn = "black";
-
-  changePlayerMenu();
-  changePlayerTurn();
-
-  // $(".player").hide(); //{effect: "slide", direction:"left", duration: 150, complete: animatePlacePiece});
-  // $(".player").show({effect: "slide", direction:"right", duration: 150, complete: animatePlacePiece});
-
-  $(".row").attr('data-color',"empty");
-  // $(".row").css("background-color","");
-  $(".board").css("background-color","");
-}
 
 setupBoard();
 
