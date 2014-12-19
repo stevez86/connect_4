@@ -82,7 +82,7 @@ var removePlayer = function() {
 
 var autoPlace = function(columnNum) {
   $( ".column" ).unbind();
-  var empty_cells = $( ".column:nth-child("+columnNum+")" ).children("[data-color=empty]");
+  var empty_cells = $( ".column:nth-child("+ (columnNum + 1) +")" ).children("[data-color=empty]");
   var cell_played = empty_cells.last();
 
   animateTurn(empty_cells);
