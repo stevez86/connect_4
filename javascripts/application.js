@@ -1,7 +1,3 @@
-// $(document).ready(function(){
-
-var playerTurn = "red";
-
 
 var changePlayerTurn = function () {
   if ( playerTurn != "red" ) {
@@ -70,6 +66,7 @@ var afterPiecePlaced = function() {
     playerTurn = "none";
   } else {
     setEvents();
+    timer("");
   }
 }
 
@@ -105,21 +102,27 @@ var startGame = function () {
   // $(".row").css("background-color","");
   $(".board").css("background-color","");
   setEvents();
+  startTimer();
+
+}
+
+var startTimer = function () {
+
+  console.log("start timer");
 
   var count=31;
-  var counter=setInterval(timer, 1000); //1000 will  run it every 1 second
+  var counter = setInterval(startTimer, 1000); //1000 will  run it every 1 second
 
-  function timer()
+  count -= 1;
+
+  $(".timer").text(":" + count); // watch for spelling
+
+  if (count <= 0)
   {
-    console.log("in time")
-    count=count-1;
-    if (count <= 0)
-    {
-       clearInterval(counter);
-       return;
-    }
-
-   $(".timer").text(":" + count); // watch for spelling
+     clearInterval(counter);
+     $(".board").css("background-color","red");
+     //next opponent
+     return;
   }
 }
 
@@ -137,6 +140,8 @@ var setEvents = function () {
     }
   );
 }
+
+// var myDataRef = new Firebase('https://s8ywk8zo4fv.firebaseio-demo.com/');
 
 startGame();
 
