@@ -1,19 +1,23 @@
 
 .column {
-  position: relative;
+  /*position: relative;*/
   width: 100px;
-  /*margin: 0;*/
+  margin: 0 auto;
   display: inline-block;
   /*vertical-align: top;*/
-  z-index: -1;
+  /*z-index: -1;*/
 }
 
 .row {
-  position: relative;
-  width: 100%;
-  height: 100px;
-  z-index: -1;
+  /*background-color: blue;*/
+  width: 90px;
+  height: 90px;
+  /*position: relative;*/
+  /*display: none;*/
+  /*z-index: -1;*/
   border-radius: 50px;
+  margin: 5px auto ;
+  border: 2px solid black;
 }
 
 [data-color="red"] {
@@ -24,9 +28,7 @@
   background-color: black;
 }
 
-[data-color="empty"] {
-  /*background-color: white;*/
-}
+
 
 .board {
   /*position: absolute;*/
@@ -34,29 +36,38 @@
   display: inline-block;
   /*border: 1px solid red;*/
   /*vertical-align: top;*/
+  background-color: yellow;
   /*background-image: url("../imgs/Connect4Board.png");*/
-  background-repeat:no-repeat;
+  /*background-repeat:no-repeat;*/
 /*  z-index: 10;*/
+  /*width: 740px;*/
+  /*height: 620px;*/
+  border-radius: 30px;
+  border: 2px solid black;
+  padding: 8px;
 }
 
-.board img {
-  display: inline-block;
-  float:left;
-  width: 728px;
-  position: absolute;
-  height: 600px;
-  border-radius: 25px;
+[data-color="empty"] {
+  background-color: white;
 }
 
 .full_layout {
-  width:730px;
+  width:900px;
   display: block;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 50px;
 }
 
 .menu {
   float: right;
   display: inline-block;
+}
+
+.menu .player {
+  width: 90px;
+  height: 90px;
+  border-radius: 85px;
+  border: 2px solid black;
 }
 
