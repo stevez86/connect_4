@@ -25,7 +25,7 @@ var changePlayerMenu = function () {
 }
 
 var animateTurn = function (empty_cells) {
-
+  console.log("animateTurn")
   animation_from_cell = empty_cells.children().first();
   animation_to_cell = empty_cells.children().last();
 
@@ -45,12 +45,14 @@ var animateTurn = function (empty_cells) {
 }
 
 var animatePlacePiece = function() {
+  console.log("animatePlacePiece")
   changePlayerMenu();
   $("#animate_from_cell").effect("transfer", {to:"#animate_to_cell", duration:500, className:playerTurn, easing:"easeOutBounce", complete: afterPiecePlaced});
   $(".player").show("slide",{direction:"right"}, 150);
 }
 
 var afterPiecePlaced = function() {
+  console.log("afterPiecePlaced")
   $("#cell_played").attr('data-color',playerTurn);
   $("#cell_played").css("background-color","");
   $("#cell_played").css("opacity","");
@@ -80,8 +82,8 @@ var removePlayer = function() {
 }
 
 var placePiece = function() {
+  console.log("placePiece")
   $( ".column" ).unbind();
-
   var empty_cells = $( this ).children("[data-color=empty]");
   var cell_played = empty_cells.last();
 
@@ -90,6 +92,9 @@ var placePiece = function() {
 
 
 var startGame = function () {
+  $(".column").unbind();
+  $(".restart").unbind();
+
   playerTurn = "black";
 
   changePlayerMenu();
@@ -103,7 +108,7 @@ var startGame = function () {
 }
 
 var setEvents = function () {
-  $( ".column" ).click(placePiece);
+  $( ".column:has([data-color=empty])" ).click(placePiece);
   $( ".restart" ).click( startGame );
 
   // if playerTurn
