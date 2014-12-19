@@ -11,6 +11,7 @@ var changeTurns = function () {
   }
 
   $( ".player" ).attr('data-color',playerTurn);
+  $('.player_name').text(playerTurn.charAt(0).toUpperCase() + playerTurn.slice(1) + " Player's Turn")
 }
 
 var placePiece = function() {
