@@ -108,20 +108,7 @@ var placePiece = function() {
 
 var playGame = function(type) {
   players = type
-  $(".column").unbind();
-  $(".restart").unbind();
 
-  playerTurn = "black";
-
-  changePlayerMenu();
-  changePlayerTurn();
-
-  // $(".player").hide(); //{effect: "slide", direction:"left", duration: 150, complete: animatePlacePiece});
-  // $(".player").show({effect: "slide", direction:"right", duration: 150, complete: animatePlacePiece});
-
-  $(".row").attr('data-color',"empty");
-  // $(".row").css("background-color","");
-  $(".board").css("background-color","");
   setEvents();
   startTimer();
 
@@ -150,7 +137,7 @@ var startTimer = function () {
 
 var setEvents = function () {
   $( ".column:has([data-color=empty])" ).click(placePiece);
-  $( ".restart" ).click( playGame );
+  $( ".restart" ).click( setupBoard );
 
   // if playerTurn
 
@@ -176,10 +163,35 @@ var triggerOnePlayerGame = function(){
   $(".restart").show()
 }
 
-$(".1player").on("click", triggerOnePlayerGame)
-$(".2player").on("click", triggerTwoPlayerGame)
 
-$(".restart").hide()
+setupBoard = function(){
+  $(".1player").unbind();
+  $(".2player").unbind();
+
+  $(".1player").on("click", triggerOnePlayerGame)
+  $(".2player").on("click", triggerTwoPlayerGame)
+
+  $("button").show();
+  $(".restart").hide();
+
+
+  $(".column").unbind();
+  $(".restart").unbind();
+
+  playerTurn = "black";
+
+  changePlayerMenu();
+  changePlayerTurn();
+
+  // $(".player").hide(); //{effect: "slide", direction:"left", duration: 150, complete: animatePlacePiece});
+  // $(".player").show({effect: "slide", direction:"right", duration: 150, complete: animatePlacePiece});
+
+  $(".row").attr('data-color',"empty");
+  // $(".row").css("background-color","");
+  $(".board").css("background-color","");
+}
+
+setupBoard();
 
 
 // $( ".img" ).click(placePiece);
