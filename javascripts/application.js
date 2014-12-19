@@ -50,6 +50,8 @@ var animatePlacePiece = function() {
   $(".player").show("slide",{direction:"right"}, 150);
 }
 
+
+
 var afterPiecePlaced = function() {
   $("#cell_played").attr('data-color',playerTurn);
   $("#cell_played").css("background-color","");
@@ -95,12 +97,31 @@ var startGame = function () {
   changePlayerMenu();
   changePlayerTurn();
 
+  // $(".player").hide(); //{effect: "slide", direction:"left", duration: 150, complete: animatePlacePiece});
+  // $(".player").show({effect: "slide", direction:"right", duration: 150, complete: animatePlacePiece});
+
   $(".row").attr('data-color',"empty");
   // $(".row").css("background-color","");
   $(".board").css("background-color","");
   setEvents();
 
+  var count=31;
+  var counter=setInterval(timer, 1000); //1000 will  run it every 1 second
+
+  function timer()
+  {
+    console.log("in time")
+    count=count-1;
+    if (count <= 0)
+    {
+       clearInterval(counter);
+       return;
+    }
+
+   $(".timer").text(":" + count); // watch for spelling
+  }
 }
+
 
 var setEvents = function () {
   $( ".column" ).click(placePiece);
