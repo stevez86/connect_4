@@ -1,20 +1,21 @@
-<!DOCTYPE html>
+<html>
   <head>
     <title>Connect 4</title>
 
     <link rel="stylesheet" href="stylesheets/stylesheet.css">
     <link rel="stylesheet" href="stylesheets/normalize.css">
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
   </head>
   <body>
 
     <header>
-      Welcome to Connect 4!
+      <!-- Welcome to Connect 4! -->
     </header>
 
     <div class="full_layout">
       <div class="board">
-        <img src = "imgs/Connect4Board.png">
+        <!-- <img src = "imgs/Connect4Board.png"> -->
         <div class="column c0">
           <div class="row r5" data-color="empty"></div>
           <div class="row r4" data-color="empty"></div>
@@ -74,8 +75,12 @@
       </div>
       <div class="menu">
         <h1>Player 1</h1>
+        <div class="player" data-color="red"></div>
       </div>
+      <!-- <div class="button-row"></div> -->
     </div>
+
     <script src="javascripts/application.js"></script>
+
   </body>
 </html>
