@@ -50,36 +50,46 @@ var findCell = function(col, row) {
 }
 
 var findDiagonal1 = function(cell) {
-  var x = parseInt(row(cell)[1]);
-  var y = parseInt(column(cell)[1]);
+  var y = parseInt(row(cell)[1]);
+  var x = parseInt(column(cell)[1]);
+
+  // console.log(x,y)
 
   var solution = []
+
   while (x>0 && y>0) {
     x--;
     y--;
   }
+  // console.log("1back",x,y)
   while (x<7 && y<6) {
     solution.push(findCell(x,y));
     x++;
     y++;
   }
+  // console.log("1forth",x,y)
   return solution
 }
 
 var findDiagonal2 = function(cell) {
-  var x = parseInt(row(cell)[1]);
-  var y = parseInt(column(cell)[1]);
+  var y = parseInt(row(cell)[1]);
+  var x = parseInt(column(cell)[1]);
+
+  // console.log(x,y)
 
   var solution = []
-  while (x>0 && y<6) {
+  while (x>0 && y<5) {
     x--;
     y++;
   }
+  // console.log("2back",x,y)
   while (x<7 && y>=0) {
     solution.push(findCell(x,y));
     x++;
     y--;
   }
+  // console.log("2forth",x,y)
+  // solution.shift();
   return solution
 }
 
@@ -103,15 +113,16 @@ var check = function (array, color) {
 }
 
 var winner = function(cell) {
+  // console.log(cell);
   var rowElements = findRow(row(cell));
   var colElements = findColumn(column(cell));
   var diag1Elements = findDiagonal1(cell);
   var diag2Elements = findDiagonal2(cell);
   var color = findColor(cell);
 
-  console.log("row elements:",rowElements,"col elements:", colElements, "diag1 elements:", diag1Elements, "diag2 elements:", diag2Elements, "color:", color)
+  // console.log("row elements:",rowElements,"col elements:", colElements, "diag1 elements:", diag1Elements, "diag2 elements:", diag2Elements, "color:", color)
 
-  console.log(check(rowElements, color), check(colElements, color),check(diag1Elements, color),check(diag2Elements, color))
+  // console.log(check(rowElements, color), check(colElements, color),check(diag1Elements, color),check(diag2Elements, color))
   if(check(rowElements, color) ||
      check(colElements, color) ||
      check(diag1Elements, color) ||
