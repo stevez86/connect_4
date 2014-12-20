@@ -1,5 +1,16 @@
+var triggerTwoPlayerGame = function(){
+  playGame(2);
+  // numPlayers = 2;
+  $(".0player").hide();
+  $(".1player").hide();
+  $(".2player").hide();
+  $(".restart").show();
+  // playerTurn = "red"
+}
 
 var changePlayerTurn = function () {
+  console.log("changePlayerTurn", playerTurn, numPlayers)
+
   if ( playerTurn != "red" ) {
     playerTurn = "red";
   } else {
@@ -21,6 +32,9 @@ var changePlayerMenu = function () {
 }
 
 var animateTurn = function (empty_cells) {
+
+  console.log("animateTurn", playerTurn)
+
   animation_from_cell = empty_cells.children().first();
   animation_to_cell = empty_cells.children().last();
 
@@ -36,7 +50,16 @@ var animateTurn = function (empty_cells) {
   cell_played.attr("id","cell_played");
 
   $(".player").hide({effect: "slide", direction:"left", duration: 400, complete: animatePlacePiece});
+}
 
+var triggerOnePlayerGame = function(){
+  playGame(1);
+  // numPlayers = 1;
+  $(".0player").hide();
+  $(".1player").hide();
+  $(".2player").hide();
+  $(".restart").show();
+  // playerTurn = "red"
 }
 
 var animatePlacePiece = function() {
@@ -46,8 +69,10 @@ var animatePlacePiece = function() {
 }
 
 
-
 var afterPiecePlaced = function() {
+  console.log("afterPiecePlaced", playerTurn)
+
+
   $("#cell_played").attr('data-color',playerTurn);
   $("#cell_played").css("background-color","");
   $("#cell_played").css("opacity","");
@@ -64,45 +89,67 @@ var afterPiecePlaced = function() {
     $(".board").css("background-color","green");
     $('.player_name').text(playerTurn.charAt(0).toUpperCase() + playerTurn.slice(1) + " won!");
     $( ".player" ).attr('data-color',playerTurn);
+    timer("pause");
     playerTurn = "none";
   } else {
 
-    changePlayerTurn();
+
     setEvents();
     timer("restart");
+    changePlayerTurn();
+    console.log(playerTurn);
 
-    if (players == 1) {
-      players = 0
-      randomMove();
-    } else if (players == 0) {
-      players = 1
+    if (playerTurn == "red") {
+      if (numPlayers == 0) {
+        randomMove();
+      }
+    } else if (playerTurn == "black") {
+      if ( (numPlayers == 0) || (numPlayers == 1) ) {
+        randomMove();
+      }
     }
+
   }
 }
 
-// var removePlayer = function() {
-//   // $(".player").hide(0);
-//   $(".player").toggle("slide",{direction:"right"},500);
-//   $(".player").toggle("slide",{direction:"left"},500);
-
-// }
+var triggerZeroPlayerGame = function(){
+  playGame(0);
+  // numPlayers = 0;
+  $(".0player").hide();
+  $(".1player").hide();
+  $(".2player").hide();
+  $(".restart").show();
+  // playerTurn = "red"
+  randomMove();
+}
 
 var computerPlace = function(columnNum) {
+  console.log("computerPlace", playerTurn)
+
   $( ".column" ).unbind();
   var empty_cells = $( ".column:nth-child("+ (columnNum + 1) +")" ).children("[data-color=empty]");
+
   if (empty_cells.length != 0) {
     var cell_played = empty_cells.last();
     animateTurn(empty_cells);
   } else {
-    randomMove()
+    randomMove();
   }
 }
 
 var randomMove = function(){
-  computerPlace(Math.floor(Math.random()*7))
+  if (!emergency_brake) {
+    computerPlace(Math.floor(Math.random()*7))
+  } else {
+    // playerTurn = "red";
+    emergency_brake = false;
+    setupBoard();
+  }
 }
 
 var placePiece = function() {
+  console.log("placePiece", playerTurn)
+
   $( ".column" ).unbind();
   timer("pause");
   var empty_cells = $( this ).children("[data-color=empty]");
@@ -111,25 +158,26 @@ var placePiece = function() {
   animateTurn(empty_cells);
 }
 
-var triggerTwoPlayerGame = function(){
-  playGame(2)
-  $(".1player").hide();
-  $(".2player").hide();
-  $(".restart").show("fade",100);
-}
 
-var triggerOnePlayerGame = function(){
-  playGame(1)
-  $(".1player").hide();
-  $(".2player").hide();
-  $(".restart").show();
-}
 
 
 setupBoard = function(){
+  console.log("setupBoard", playerTurn)
+
+  if (emergency_brake) {
+    emergency_brake = false;
+  }
+
+  if (numPlayers == 0) {
+    emergency_brake = true;
+  }
+
+
+  $(".0player").unbind();
   $(".1player").unbind();
   $(".2player").unbind();
 
+  $(".0player").on("click", triggerZeroPlayerGame);
   $(".1player").on("click", triggerOnePlayerGame);
   $(".2player").on("click", triggerTwoPlayerGame);
 
@@ -139,7 +187,7 @@ setupBoard = function(){
   $(".column").unbind();
   $(".restart").unbind();
 
-  playerTurn = "black";
+  playerTurn = "none";
 
   changePlayerMenu();
   changePlayerTurn();
@@ -152,24 +200,21 @@ setupBoard = function(){
 }
 
 var playGame = function(type) {
-  players = type;
+  numPlayers = type;
 
   setEvents();
   timer("restart");
-
 }
 
 
-var time;
-var counter;
 
 var timer = function(key) {
 
   time -= 1;
 
   if (key == "restart") {
-    console.log(key);
-    time = 20;
+    // console.log(key);
+    time = 15;
     clearInterval(counter);
     counter = setInterval(timer, 1000);
   }
@@ -184,6 +229,7 @@ var timer = function(key) {
   {
     $(".timer").text(":" + time);
     clearInterval(counter);
+    randomMove();
     return;
   }
 
@@ -204,6 +250,11 @@ var setEvents = function () {
   );
 }
 
+var emergency_brake = false;
+var numPlayers;
+var time;
+var counter;
+var playerTurn;
 
 setupBoard();
 
