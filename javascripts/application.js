@@ -64,19 +64,25 @@ var afterPiecePlaced = function() {
     $(".board").css("background-color","green");
     $('.player_name').text(playerTurn.charAt(0).toUpperCase() + playerTurn.slice(1) + " won!");
     $( ".player" ).attr('data-color',playerTurn);
+    timer("pause");
     playerTurn = "none";
   } else {
 
-    changePlayerTurn();
+
     setEvents();
     timer("restart");
 
-    if (players == 1) {
-      players = 0
-      randomMove();
-    } else if (players == 0) {
-      players = 1
+    if (playerTurn == "red") {
+      if (numPlayers == 0) {
+        randomMove();
+      }
+    } else if (playerTurn == "black") {
+      if ( (numPlayers == 0) || (numPlayers == 1) ) {
+        randomMove();
+      }
     }
+
+    changePlayerTurn();
   }
 }
 
@@ -90,11 +96,12 @@ var afterPiecePlaced = function() {
 var computerPlace = function(columnNum) {
   $( ".column" ).unbind();
   var empty_cells = $( ".column:nth-child("+ (columnNum + 1) +")" ).children("[data-color=empty]");
+
   if (empty_cells.length != 0) {
     var cell_played = empty_cells.last();
     animateTurn(empty_cells);
   } else {
-    randomMove()
+    randomMove();
   }
 }
 
@@ -113,23 +120,39 @@ var placePiece = function() {
 
 var triggerTwoPlayerGame = function(){
   playGame(2)
-  $(".1player").hide();
-  $(".2player").hide();
-  $(".restart").show("fade",100);
-}
-
-var triggerOnePlayerGame = function(){
-  playGame(1)
+  $(".0player").hide();
   $(".1player").hide();
   $(".2player").hide();
   $(".restart").show();
 }
 
+var triggerOnePlayerGame = function(){
+  playGame(1)
+  $(".0player").hide();
+  $(".1player").hide();
+  $(".2player").hide();
+  $(".restart").show();
+}
+
+var triggerZeroPlayerGame = function(){
+  playGame(0)
+  $(".0player").hide();
+  $(".1player").hide();
+  $(".2player").hide();
+  $(".restart").show();
+  randomMove();
+}
+
 
 setupBoard = function(){
+
+  $.finish();
+
+  $(".0player").unbind();
   $(".1player").unbind();
   $(".2player").unbind();
 
+  $(".0player").on("click", triggerZeroPlayerGame);
   $(".1player").on("click", triggerOnePlayerGame);
   $(".2player").on("click", triggerTwoPlayerGame);
 
@@ -152,7 +175,7 @@ setupBoard = function(){
 }
 
 var playGame = function(type) {
-  players = type;
+  numPlayers = type;
 
   setEvents();
   timer("restart");
@@ -169,7 +192,7 @@ var timer = function(key) {
 
   if (key == "restart") {
     console.log(key);
-    time = 20;
+    time = 15;
     clearInterval(counter);
     counter = setInterval(timer, 1000);
   }
@@ -184,6 +207,7 @@ var timer = function(key) {
   {
     $(".timer").text(":" + time);
     clearInterval(counter);
+    randomMove();
     return;
   }
 
@@ -203,7 +227,6 @@ var setEvents = function () {
     }
   );
 }
-
 
 setupBoard();
 
