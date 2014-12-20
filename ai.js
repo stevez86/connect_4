@@ -1,11 +1,11 @@
 var testingArray = function(array, cell){
-  for (var i=0; i<rowElements.length; i++){
+  for (var i=0; i<array.length; i++){
     // rowElements.each_with_index do |element, index|
     if (
-       (row(rowElements[i])[1] == row(cell)[1]) &&
-       (column(columnElements[i])[1] == column(cell)[1])
+       (row(array[i])[1] == row(cell)[1]) &&
+       (column(array[i])[1] == column(cell)[1])
        ) {
-      rowElements[i].dataset.color = cell.dataset.color
+      array[i].dataset.color = cell.dataset.color
     }
   }
   return array
@@ -22,12 +22,16 @@ var victoriousMove = function(){
 }
 
 var testVictory = function(column){
-  console.log(".c"+column)
-  console.log($(".c"+column))
-  console.log($(".c"+column).children("[data-color=empty]"))
+
+  // console.log(".c"+column)
+  // console.log($(".c"+column))
+  // console.log($(".c"+column).children("[data-color=empty]"))
+
   var empty_cells = $(".c"+column).children("[data-color=empty]");
-  var cell = empty_cells.last();
+  var cell = empty_cells.last()[0];
   var color = playerTurn
+
+
   var rowElements = findRow(row(cell));
   rowElements = testingArray(rowElements, cell); // returns array with substitution
 
