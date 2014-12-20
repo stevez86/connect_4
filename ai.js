@@ -21,20 +21,20 @@ var victoriousMove = function(){
   return null
 }
 
-var testVictory = function(column){
+var testVictory = function(columnNum){
 
-  // console.log(".c"+column)
-  // console.log($(".c"+column))
-  // console.log($(".c"+column).children("[data-color=empty]"))
+  // console.log(".c"+columnNum)
+  // console.log($(".c"+columnNum))
+  // console.log($(".c"+columnNum).children("[data-color=empty]"))
 
-  var empty_cells = $(".c"+column).children("[data-color=empty]");
+  var empty_cells = $(".c"+columnNum).children("[data-color=empty]");
   var cell = empty_cells.last()[0];
   var color = playerTurn
 
 
   var rowElements = findRow(row(cell));
   rowElements = testingArray(rowElements, cell); // returns array with substitution
-
+  console.log(typeof rowElements)
   var colElements = findColumn(column(cell));
   colElements = testingArray(colElements, cell);
 
@@ -43,7 +43,9 @@ var testVictory = function(column){
 
   var diag2Elements = findDiagonal2(cell);
   diag2Elements = testingArray(diag2Elements, cell);
-
+  console.log(color)
+  console.log(rowElements)
+  console.log(check(rowElements, color))
   if(
     check(rowElements, color) ||
     check(colElements, color) ||
